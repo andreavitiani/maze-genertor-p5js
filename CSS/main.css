@@ -1,0 +1,84 @@
+/*@import url('https://fonts.googleapis.com/css?family=Montserrat');*/
+
+/*@import url('https://fonts.googleapis.com/css?family=Press+Start+2P');*/
+
+* {
+	/*	font-family: 'Montserrat', sans-serif;*/
+}
+
+h1 {
+	font-size: 60px;
+	text-align: center;
+	/*	font-family: 'Press Start 2P', cursive;*/
+}
+
+/*
+.line {
+	border: 3px black solid;
+}
+*/
+
+.winningpath {
+	border: 1px black dashed;
+}
+
+.entranceexit {
+	order: 5px red solid;
+}
+
+/*
+.maze {
+	align-content: center;
+	margin: 120px auto;
+	border: 3px black solid;
+}
+*/
+
+.realmaze {
+	align-content: center;
+	margin: 10px auto;
+	border: 3px black solid;
+}
+
+
+.buttondiv {
+	width: 50%;
+	margin: auto;
+}
+
+.button {
+	width: 250px;
+	height: 50px;
+	margin: 30px;
+	border: none;
+	display: inline;
+	text-align: center;
+	color: white;
+	font-size: 16px;
+	background-color: #333;
+}
+
+.godiv {
+	width: 50%;
+	margin: auto;
+	text-align: center;
+}
+
+.go {
+	width: 50%;
+	height: 50px;
+	margin: 20px auto;
+	border: none;
+	display: inline;
+	text-align: center;
+	color: white;
+	font-size: 16px;
+	background-color: #333;
+}
+
+.sqaremaze {
+	width: 5px;
+	/*	height: 5px;*/
+	border: 1px black solid;
+	box-sizing: border-box;
+}
