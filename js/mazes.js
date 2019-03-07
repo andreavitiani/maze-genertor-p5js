@@ -24,6 +24,7 @@ let w = 20;
 let grid = [];
 let current;
 let next;
+let stack = [];
 
 //EACH CELL HAVE THE FOLLOWING PROPERTIES
 // I AND J COORDINATES STORED IN TWO DIFFERENT PROPERTIES
@@ -73,12 +74,12 @@ class Cell {
 		let right = grid[index(this.i + 1, this.j)];
 		let bottom = grid[index(this.i, this.j + 1)];
 		let left = grid[index(this.i - 1, this.j)];
-		//IN THE BELOW  PART THE METHOD CHECH IF THE ADJACENT CELL HAVE BEEN VISITED AND IT IT S A VALID CELL THROUGH A CONDITIONAL STATEMENT (THE FUNCTION CALLED 'INDEX' TAKE CARE OF CHECKING IF THE CELLS ARE OUT OF THE EDGES RETURNING '-1' IN THAT CASE). THE FUNCTION THEN PUT THE UNVISITED CELLS IN AN ARRAY CALLED 'NEIGHBORS'.
+		//IN THE BELOW  PART THE METHOD CHECH IF THE ADJACENT CELL HAVE BEEN VISITED AND IT IT S A VALID CELL
 		if (top && !top.visited) neighbors.push(top);
 		if (right && !right.visited) neighbors.push(right);
 		if (bottom && !bottom.visited) neighbors.push(bottom);
 		if (left && !left.visited) neighbors.push(left);
-		//IF THERE ARE UNVISITED CELLS THE FUNCTION RETURNS ONE RANDOM CELL FROM THE ARRAY ELSE IT RETURN UNDEFINED FOR FURTHER CONDITIONAL STATEMENT IN DRAW
+		//IF THERE ARE UNVISITED CELLS THE FUNCTION RETURNS ONE RANDOM CELL FROM THE NEIGHBORS ARRAY
 		if (neighbors.length > 0) {
 			let r = floor(random(0, neighbors.length));
 			return neighbors[r];
@@ -108,37 +109,32 @@ function draw() {
 	for (let i = 0; i < grid.length; i++) {
 		grid[i].show(); //SHOW METHOD OF THE CELL OBJECT IN GRID INDEX:'I'
 	}
-
-	current.visited = true; //PUT THE VISITED BOOLEAN PROPERTY OF THE CELL OBJECT TO TRUE. THIS BOOLEAN IS EVALUATED IN THE 'CHECK-NEIGHBORS' METHOD OF THE CELL OBJECT AND IF FALSE PUT THE CELL IN THE NEIGHBORS ARRAY TO BE CHOSEN AS NEXT CELL
-	current.highlight();
-	//If the current cell has any neighbours which have not been visited
-
-	next = current.checkNeighbors(); //DO THIS: 'let r = floor(random(0, neighbors.length)); return neighbors[r];'
+	current.visited = true; //PUT THE VISITED BOOLEAN PROPERTY OF THE CELL OBJECT TO TRUE.
+	current.highlight(); //highlight the current cell
+	//STEP 1: Choose randomly one of the unvisited neighbours:
+	next = current.checkNeighbors();
+	//STEP 3: Remove the wall between the current cell and the chosen cell:
 	if (next) {
-		//STEP 1: Choose randomly one of the unvisited neighbours
-		//STEP 2: Push the current cell to the stack
-		//calling the checkNeighbors function take care of oboth step one, two and four
 		next.visited = true;
-		//STEP 3: Remove the wall between the current cell and the chosen cell
-		//		console.log(index(current.i, current.j));
-		//		console.log(index(next.i, next.j));
-		//		console.log(next[i]);//		console.log(next[i] - current[i]);
 		removeWalls(current, next);
+		//STEP 2: Push the current cell to the stack:
+		stack.push(current);
 		//STEP 4: Make the chosen cell the current cell and mark it as visited
-		//calling the checkNeighbors above function take care of oboth step one, two and four
 		current = next;
+	} else if (stack.length > 0) {
+		current = stack.pop();
 	}
 }
 
 //FUNCTIONS===================================
-//THIS IMPORTANT FUNCTION CHECK IF A COORDINATE IS NOT OUT OF THE EDGE AND RETURN THE INDEX OF THE CELL FROM THE GRID ARRAY
+//RETURN THE INDEX OF THE CELL FROM THE GRID ARRAY. CHECK IF A COORDINATE IS AMONG THE EDGE.
 function index(i, j) {
 	if (i < 0 || j < 0 || i > cols - 1 || j > rows - 1) {
 		return -1;
 	}
 	return i + j * cols;
 }
-//below a function for removing the walls between consequently visited cells
+//Removing the walls between visited cells
 function removeWalls(a, b) {
 	a = index(current.i, current.j);
 	b = index(next.i, next.j);
